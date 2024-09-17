@@ -94,3 +94,4 @@ class OrderProduct(models.Model):
         if self.variant:
             return self.variant.price * self.quantity
         return self.product.price * self.quantity
+#good 
