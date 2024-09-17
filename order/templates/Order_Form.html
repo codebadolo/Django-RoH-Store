@@ -3,7 +3,7 @@
 {% block title %} Order Page {% endblock %}
 {% block description %} {{ setting.description }} {% endblock %}
 {% block keywords %} {{ setting.keywords }} {% endblock %}
-
+{% load static %}
 {% block sidebar %} {% include 'sidebar.html' %} {% endblock %}
 
 {% block body %}
@@ -102,7 +102,12 @@
                                         {% if rs.variant.image_id  > 0 %}
                                             <img src="{{rs.variant.image }}" alt="">
                                         {% else %}
-                                            <img src="{{rs.product.image.url}}" alt="">
+                                        {% if product.image %}
+                                        <img src="{{ product.image.url }}" alt="{{ product.title }}">
+                                    {% else %}
+                                        <img src="{% static 'path_to_default_image.jpg' %}" alt="Default Image">
+                                    {% endif %}
+                                    
                                         {% endif %}
 
                                     </td>

@@ -26,7 +26,7 @@ from user import views as UserViews
 from django.utils.translation import gettext_lazy as _
 
 urlpatterns = [
-    path('selectlanguage', views.selectlanguage, name='selectlanguage'),
+
     path('selectcurrency', views.selectcurrency, name='selectcurrency'),
     path('savelangcur', views.savelangcur, name='savelangcur'),
     path('i18n/', include('django.conf.urls.i18n')),
@@ -57,4 +57,6 @@ urlpatterns += i18n_patterns(
     path('faq/', views.faq, name='faq'),
     path('ajaxcolor/', views.ajaxcolor, name='ajaxcolor'),
     prefix_default_language=False,
-)+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+)
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

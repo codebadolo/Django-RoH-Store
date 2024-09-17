@@ -20,7 +20,12 @@
                     <div class="product product-single">
                         <div class="product-thumb">
                             <a href="{% url 'product_detail' rs.id rs.slug %}" class="main-btn quick-view"><i class="fa fa-search-plus"></i> Quick view</a>
-                            <img src="{{ rs.image.url }}" alt="" style="height: 200px">
+                            {% if product.image %}
+                                <img src="{{ product.image.url }}" alt="{{ product.title }}">
+                            {% else %}
+                                <img src="{% static 'path_to_default_image.jpg' %}" alt="Default Image">
+                            {% endif %}
+
                         </div>
                         <div class="product-body">
                             <h3 class="product-price">{{ rs.price|currency:request.session.currency }} {{ request.session.currency }}</h3>
@@ -70,7 +75,12 @@
                     <div class="product product-single">
                         <div class="product-thumb">
                             <a href="{% url 'product_detail' rs.id rs.slug %}" class="main-btn quick-view"><i class="fa fa-search-plus"></i> Quick view</a>
-                            <img src="{{ rs.image.url }}" alt="" style="height: 200px">
+                            {% if product.image %}
+                            <img src="{{ product.image.url }}" alt="{{ product.title }}">
+                        {% else %}
+                            <img src="{% static 'path_to_default_image.jpg' %}" alt="Default Image">
+                        {% endif %}
+                        
                         </div>
                         <div class="product-body">
                             <h3 class="product-price">{{ rs.price|currency:request.session.currency }} {{ request.session.currency }} </h3>

@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import PasswordChangeForm
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
-
+from django.shortcuts import get_object_or_404
 # Create your views here.
 from django.utils import translation
 
@@ -30,31 +30,26 @@ def login_form(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            current_user =request.user
-            userprofile=UserProfile.objects.get(user_id=current_user.id)
+            current_user = request.user
+            userprofile = UserProfile.objects.get(user_id=current_user.id)
+            
+            # Store user image in session
             request.session['userimage'] = userprofile.image.url
-            #*** Multi Langugae
-            request.session[translation.LANGUAGE_SESSION_KEY] = userprofile.language.code
-            request.session['currency'] = userprofile.currency.code
-            translation.activate(userprofile.language.code)
-
-            # Redirect to a success page.
-            return HttpResponseRedirect('/'+userprofile.language.code)
+            
+            # Redirect to a success page (adjust as needed)
+            return HttpResponseRedirect('/')
         else:
-            messages.warning(request,"Login Error !! Username or Password is incorrect")
+            messages.warning(request, "Login Error! Username or Password is incorrect")
             return HttpResponseRedirect('/login')
-    # Return an 'invalid login' error message.
+    
+    # Render the login form
+    context = {}
+    return render(request, 'login_form.html', context)
 
-    #category = Category.objects.all()
-    context = {#'category': category
-     }
-    return render(request, 'login_form.html',context)
 
 def logout_func(request):
     logout(request)
-    if translation.LANGUAGE_SESSION_KEY in request.session:
-        del request.session[translation.LANGUAGE_SESSION_KEY]
-        del request.session['currency']
+    # No need to remove language or currency from the session
     return HttpResponseRedirect('/')
 
 
@@ -62,29 +57,24 @@ def signup_form(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
         if form.is_valid():
-            form.save() #completed sign up
+            form.save()  # completed sign up
             username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password1')
             user = authenticate(username=username, password=password)
             login(request, user)
-            # Create data in profile table for user
+            # Create user profile
             current_user = request.user
-            data=UserProfile()
-            data.user_id=current_user.id
-            data.image="images/users/user.png"
-            data.save()
+            UserProfile.objects.create(user=current_user, image="images/users/user.png")
             messages.success(request, 'Your account has been created!')
             return HttpResponseRedirect('/')
         else:
-            messages.warning(request,form.errors)
+            # Show form errors to the user
+            for error in form.errors:
+                messages.error(request, f"Error in {error}: {form.errors[error]}")
             return HttpResponseRedirect('/signup')
 
-
     form = SignUpForm()
-    #category = Category.objects.all()
-    context = {#'category': category,
-               'form': form,
-               }
+    context = {'form': form}
     return render(request, 'signup_form.html', context)
 
 
@@ -139,18 +129,20 @@ def user_orders(request):
                }
     return render(request, 'user_orders.html', context)
 
+
+
 @login_required(login_url='/login') # Check login
-def user_orderdetail(request,id):
-    #category = Category.objects.all()
+def user_orderdetail(request, id):
     current_user = request.user
-    order = Order.objects.get(user_id=current_user.id, id=id)
+    order = get_object_or_404(Order, user_id=current_user.id, id=id)
     orderitems = OrderProduct.objects.filter(order_id=id)
+    
     context = {
-        #'category': category,
         'order': order,
         'orderitems': orderitems,
     }
     return render(request, 'user_order_detail.html', context)
+
 
 @login_required(login_url='/login') # Check login
 def user_order_product(request):

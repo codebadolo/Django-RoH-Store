@@ -1,6 +1,6 @@
 {% load static %}
 {% load i18n %}
-
+{% load myapptags %}
 <!-- NAVIGATION -->
 <div id="navigation">
     <!-- container -->
@@ -15,19 +15,13 @@
 
             <span class="category-header">{% trans "Categories" %} <i class="fa fa-list"></i></span>
 
-
-            {% load myapptags %}
-            {% if LANGUAGE_CODE is None %}
-                {% get_current_language as LANGUAGE_CODE %}
-                {% categoryTree 0 '' LANGUAGE_CODE as category %}
-            {% else %}
-                {% categoryTree 0 '' 'en' as category %}
-            {% endif %}
-
+            <!-- Call categoryTree without the lang argument -->
+            {% categoryTree 0 '' as category %}
 
             <ul class="category-list">
-                {{ category | safe  }}
+                {{ category | safe }}
             </ul>
+
 
             </div>
             <!-- /category nav -->

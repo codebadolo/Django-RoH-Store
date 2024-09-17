@@ -1,5 +1,6 @@
 {% load static %}
 {% load i18n %}
+{% load myapptags %}
 {% load currency %}
 <header>
     <!-- top Header -->
@@ -24,26 +25,7 @@
                     <li><a href="#">{% trans "Store" %}</a></li>
                     <li><a href="#">{% trans "Newsletter" %}</a></li>
                     <li><a href="{% url 'faq' %}">{% trans "FAQ" %}</a></li>
-                    <li class="dropdown default-dropdown">
-                        <form action="{% url 'selectlanguage' %}" method="post">{% csrf_token %}
-                            <input name="next" type="hidden" value="{{ redirect_to }}">
-                            <select name="language" onchange="submit()" >
-
-                                {% get_current_language as LANGUAGE_CODE %}
-                                {% get_available_languages as LANGUAGES %}
-                                {% get_language_info_list for LANGUAGES as languages %}
-                                {% for language in languages %}
-                                    <option value="{{ language.code }}"{% if language.code == LANGUAGE_CODE %} selected{% endif %}>
-                                        {{ language.name_local }} ({{ language.code }})
-                                    </option>
-                                {% endfor %}
-
-                            </select>
-                            <noscript>
-                                <input type="submit" value="Set" />
-                            </noscript>
-                        </form>
-                    </li>
+              
 
                     <li class="dropdown default-dropdown">
 
@@ -155,7 +137,8 @@
                             <div class="header-btns-icon">
                                 <i class="fa fa-shopping-cart"></i>
                                 {% load myapptags %}
-                                {% shopcartcount user.id as count %}
+                                
+                            <span>Items in Cart: {% shopcartcount user.id %}</span>
 
                                 <span class="qty">{{ count }}</span>
                             </div>
