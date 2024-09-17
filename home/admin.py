@@ -1,27 +1,28 @@
-from django.contrib import admin
 
+from django.contrib import admin
+from unfold.admin import ModelAdmin
 # Register your models here.
 from home.models import Setting, ContactMessage, FAQ, Language, SettingLang
 
 
-class SettingtAdmin(admin.ModelAdmin):
+class SettingtAdmin(ModelAdmin):
     list_display = ['title','company', 'update_at','status']
 
-class ContactMessageAdmin(admin.ModelAdmin):
+class ContactMessageAdmin(ModelAdmin):
     list_display = ['name','subject', 'update_at','status']
     readonly_fields =('name','subject','email','message','ip')
     list_filter = ['status']
 
-class FAQAdmin(admin.ModelAdmin):
+class FAQAdmin(ModelAdmin):
     list_display = ['question', 'answer','ordernumber','lang','status']
     list_filter = ['status','lang']
 
-class LanguagesAdmin(admin.ModelAdmin):
+class LanguagesAdmin(ModelAdmin):
     list_display = ['name', 'code','status']
     list_filter = ['status']
 
 
-class SettingLangAdmin(admin.ModelAdmin):
+class SettingLangAdmin(ModelAdmin):
     list_display = ['title', 'keywords','description','lang']
     list_filter = ['lang']
 
