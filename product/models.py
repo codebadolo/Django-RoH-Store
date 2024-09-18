@@ -19,7 +19,7 @@ class Category(MPTTModel):
     title = models.CharField(max_length=50)
     keywords = models.CharField(max_length=255)
     description = models.TextField(max_length=255)
-    image = models.ImageField(blank=True, upload_to='images/')
+    image = models.ImageField(blank=True, upload_to='uploads/images/')
     status = models.CharField(max_length=10, choices=STATUS)
     slug = models.SlugField(null=False, unique=True)
     create_at = models.DateTimeField(auto_now_add=True)
@@ -79,7 +79,7 @@ class Product(models.Model):
 
     def image_tag(self):
         if self.image and hasattr(self.image, 'url'):
-            return mark_safe(f'<img src="{self.image.url}" height="50"/>')
+            return mark_safe(f'<img src="{self.image.url}" height="600"/>')
         else:
             return "No Image"
     image_tag.short_description = 'Image'
@@ -99,7 +99,7 @@ class Product(models.Model):
 class Images(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     title = models.CharField(max_length=50, blank=True)
-    image = models.ImageField(blank=True, upload_to='images/')
+    image = models.ImageField(blank=True, upload_to='uploads/images/')
 
     def __str__(self):
         return self.title

@@ -167,100 +167,185 @@ CKEDITOR_CONFIGS = {
 #APPEND_SLASH=False
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-# settings.py
-'''
+from django.templatetags.static import static
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 
-
 UNFOLD = {
-    "SITE_TITLE": "Custom suffix in <title> tag",
-    "SITE_HEADER": "Appears in sidebar at the top",
-    "SITE_URL": "/",
-    # "SITE_ICON": lambda request: static("icon.svg"),  # both modes, optimise for 32px height
- 
-    # "SITE_LOGO": lambda request: static("logo.svg"),  # both modes, optimise for 32px height
- 
-    "SITE_SYMBOL": "speed",  # symbol from icon set
-    
-    "SHOW_HISTORY": True, # show/hide "History" button, default: True
-    "SHOW_VIEW_ON_SITE": True, # show/hide "View on site" button, default: True
-    "ENVIRONMENT": "sample_app.environment_callback",
-    "DASHBOARD_CALLBACK": "sample_app.dashboard_callback",
-    "THEME": "dark", # Force theme: "dark" or "light". Will disable theme switcher
-  
+    "SITE_TITLE": "My Admin Panel",  # Title for the admin panel
+    "SITE_HEADER": "Admin Dashboard",  # Title at the top of the sidebar
 
-    "COLORS": {
-        "font": {
-            "subtle-light": "107 114 128",
-            "subtle-dark": "156 163 175",
-            "default-light": "75 85 99",
-            "default-dark": "209 213 219",
-            "important-light": "17 24 39",
-            "important-dark": "243 244 246",
-        },
-        "primary": {
-            "50": "250 245 255",
-            "100": "243 232 255",
-            "200": "233 213 255",
-            "300": "216 180 254",
-            "400": "192 132 252",
-            "500": "168 85 247",
-            "600": "147 51 234",
-            "700": "126 34 206",
-            "800": "107 33 168",
-            "900": "88 28 135",
-            "950": "59 7 100",
-        },
+    "SITE_LOGO": {
+        "light": lambda request: static("images/logo-light.svg"),
+        "dark": lambda request: static("images/logo-dark.svg"),
     },
-    "EXTENSIONS": {
-        "modeltranslation": {
-            "flags": {
-                "en": "🇬🇧",
-                "fr": "🇫🇷",
-                "nl": "🇧🇪",
-            },
-        },
-    },
+    "SITE_SYMBOL": "home",  # Icon used in the admin panel
+    "SHOW_HISTORY": True,  # Show history button
+    "SHOW_VIEW_ON_SITE": True,  # Show "View on site" button
+    "THEME": "light",  # Default theme for admin panel (light or dark)
+
     "SIDEBAR": {
-        "show_search": False,  # Search in applications and models names
-        "show_all_applications": False,  # Dropdown with all applications and models
+        "show_search": False,  # Disable search in sidebar
+        "show_all_applications": False,  # Disable all application listing
         "navigation": [
-            {
-                "title": _("Navigation"),
-                "separator": True,  # Top border
-                "collapsible": True,  # Collapsible group of links
+              {
+                "title": _("Dashboard"),
+                "icon": "dashboard",  # Icon for dashboard
                 "items": [
                     {
                         "title": _("Dashboard"),
-                        "icon": "dashboard",  # Supported icon set: https://fonts.google.com/icons
+                        "icon": "dashboard",  # Icon for dashboard
                         "link": reverse_lazy("admin:index"),
-                        "badge": "sample_app.badge_callback",
-                        "permission": lambda request: request.user.is_superuser,
+                    },
+                ]
+            },
+            # Authentication and Authorization section
+           
+
+            # Currencies section
+            {
+                "title": _("Currencies"),
+                "icon": "attach_money",
+                "items": [
+                    {
+                        "title": _("Currencies"),
+                        "icon": "currency_exchange",
+                        "link": reverse_lazy("admin:currencies_currency_changelist"),
+                    },
+                ]
+            },
+
+            # Home section
+            {
+                "title": _("Home"),
+                "icon": "home",
+                "items": [
+                    {
+                        "title": _("Contact messages"),
+                        "icon": "message",
+                        "link": reverse_lazy("admin:home_contactmessage_changelist"),
+                    },
+                    {
+                        "title": _("Faqs"),
+                        "icon": "help",
+                        "link": reverse_lazy("admin:home_faq_changelist"),
+                    },
+                    {
+                        "title": _("Settings"),
+                        "icon": "settings",
+                        "link": reverse_lazy("admin:home_setting_changelist"),
+                    },
+                ]
+            },
+
+            # Order section
+            {
+                "title": _("Order"),
+                "icon": "receipt_long",
+                "items": [
+                    {
+                        "title": _("Orders"),
+                        "icon": "shopping_cart",
+                        "link": reverse_lazy("admin:order_order_changelist"),
+                    },
+                    {
+                        "title": _("Order products"),
+                        "icon": "inventory",
+                        "link": reverse_lazy("admin:order_orderproduct_changelist"),
+                    },
+                    {
+                        "title": _("Shop carts"),
+                        "icon": "shopping_basket",
+                        "link": reverse_lazy("admin:order_shopcart_changelist"),
+                    },
+                ]
+            },
+
+            # Product section
+            {
+                "title": _("Product"),
+                "icon": "storefront",
+                "items": [
+                    {
+                        "title": _("Categories"),
+                        "icon": "category",
+                        "link": reverse_lazy("admin:product_category_changelist"),
+                    },
+                    {
+                        "title": _("Products"),
+                        "icon": "production_quantity_limits",
+                        "link": reverse_lazy("admin:product_product_changelist"),
+                    },
+                    {
+                        "title": _("Colors"),
+                        "icon": "palette",
+                        "link": reverse_lazy("admin:product_color_changelist"),
+                    },
+                    {
+                        "title": _("Sizes"),
+                        "icon": "straighten",
+                        "link": reverse_lazy("admin:product_size_changelist"),
+                    },
+                    {
+                        "title": _("Variants"),
+                        "icon": "layers",
+                        "link": reverse_lazy("admin:product_variants_changelist"),
+                    },
+                    {
+                        "title": _("Images"),
+                        "icon": "image",
+                        "link": reverse_lazy("admin:product_images_changelist"),
+                    },
+                    {
+                        "title": _("Comments"),
+                        "icon": "comment",
+                        "link": reverse_lazy("admin:product_comment_changelist"),
+                    },
+                ]
+            },
+
+            # User section
+            {
+                "title": _("User"),
+                "icon": "people",
+                "items": [
+                    {
+                        "title": _("User profiles"),
+                        "icon": "account_circle",
+                        "link": reverse_lazy("admin:user_userprofile_changelist"),
+                    },
+                ]
+            },
+             {
+                "title": _("Authentication and Authorization"),
+                "icon": "lock",
+                "items": [
+                    {
+                        "title": _("Groups"),
+                        "icon": "group",
+                        "link": reverse_lazy("admin:auth_group_changelist"),
                     },
                     {
                         "title": _("Users"),
-                        "icon": "people",
-                        "link": reverse_lazy("admin:users_user_changelist"),
+                        "icon": "person",
+                        "link": reverse_lazy("admin:auth_user_changelist"),
                     },
-                ],
+                ]
             },
         ],
     },
-    "TABS": [
-        {
-            "models": [
-                "app_label.model_name_in_lowercase",
-            ],
-            "items": [
-                {
-                    "title": _("Your custom title"),
-                    "link": reverse_lazy("admin:app_label_model_name_changelist"),
-                    "permission": "sample_app.permission_callback",
-                },
-            ],
+
+    # Define colors for light and dark themes
+    "COLORS": {
+        "font": {
+            "subtle-light": "107 114 128",
+            "default-light": "75 85 99",
+            "important-light": "17 24 39",
         },
-    ],
+        "primary": {
+            "100": "243 232 255",
+            "500": "168 85 247",  # Main color for buttons or highlights
+            "900": "88 28 135",
+        },
+    },
 }
-'''

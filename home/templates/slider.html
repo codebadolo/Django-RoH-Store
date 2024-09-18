@@ -12,7 +12,13 @@
                     {% for rs in products_slider %}
                     <!-- banner -->
 					<div class="banner banner-1">
-						<img src="{{ rs.image.url }}" alt="" style="height: 600px">
+						{% if rs.image %}
+						<img src="{{ rs.image.url }}" alt="{{ rs.title }}" style="height: 600px">
+					{% else %}
+						<img src="{% static 'images/default.jpg' %}" alt="Default Image" style="height: 600px">
+					{% endif %}
+					
+
 						<div class="banner-caption text-center">
 							<h1>{{ rs.title }}   </h1>
 							<h3 class="white-color font-weak">  {{ rs.price|currency:request.session.currency }} {{ request.session.currency }} </h3>
