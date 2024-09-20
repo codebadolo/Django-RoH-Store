@@ -172,13 +172,10 @@ from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 
 UNFOLD = {
-    "SITE_TITLE": "My Admin Panel",  # Title for the admin panel
-    "SITE_HEADER": "Admin Dashboard",  # Title at the top of the sidebar
+    "SITE_TITLE": "ROH Store",  # Title for the admin panel
+    "SITE_HEADER": "RoH Store",  # Title at the top of the sidebar
 
-    "SITE_LOGO": {
-        "light": lambda request: static("images/logo-light.svg"),
-        "dark": lambda request: static("images/logo-dark.svg"),
-    },
+  
     "SITE_SYMBOL": "home",  # Icon used in the admin panel
     "SHOW_HISTORY": True,  # Show history button
     "SHOW_VIEW_ON_SITE": True,  # Show "View on site" button
